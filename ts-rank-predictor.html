@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TS EAMCET Rank Predictor  | Vamsi Journey</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#00c9a7;--teal2:#007a65;--gold:#F5C518;--gold2:#ff9d00;
+  --bg:#06100e;--card:#0b1a17;--border:rgba(0,201,167,0.15);
+  --text:#e0ede9;--muted:#5a7a72;--green:#22c55e;--blue:#60a5fa;--red:#f87171;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:"VAMSI JOURNEY";position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-family:"Syne",sans-serif;font-size:clamp(40px,8vw,90px);font-weight:800;color:rgba(0,201,167,0.04);white-space:nowrap;pointer-events:none;z-index:0;letter-spacing:8px;}
+
+.hero{position:relative;padding:44px 20px 36px;text-align:center;background:radial-gradient(ellipse 80% 55% at 50% 0%,rgba(0,201,167,0.08) 0%,transparent 70%);border-bottom:1px solid var(--border);}
+.hero::after{content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:180px;height:1px;background:linear-gradient(90deg,transparent,var(--teal),transparent);}
+.brand{display:inline-flex;align-items:center;gap:8px;background:rgba(0,201,167,0.08);border:1px solid var(--border);padding:5px 16px 5px 12px;border-radius:100px;font-family:"Syne",sans-serif;font-size:12px;font-weight:700;color:var(--teal);letter-spacing:1px;margin-bottom:20px;}
+.brand::before{content:"⚡";}
+.ts-badge{display:inline-block;background:rgba(245,197,24,0.1);border:1px solid rgba(245,197,24,0.25);color:var(--gold);padding:4px 14px;border-radius:100px;font-size:12px;font-weight:700;font-family:"Syne",sans-serif;margin-bottom:16px;margin-left:8px;}
+.hero h1{font-family:"Syne",sans-serif;font-size:clamp(1.8rem,5vw,3.2rem);font-weight:800;line-height:1.1;margin-bottom:10px;letter-spacing:-1px;}
+.hero h1 em{font-style:normal;color:var(--teal);}
+.hero p{color:var(--muted);font-size:15px;max-width:480px;margin:0 auto 16px;line-height:1.6;}
+.pills{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.pill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:5px 12px;border-radius:100px;font-size:12px;color:#999;}
+.pill strong{color:var(--teal);}
+.approx-badge{margin-top:14px;display:inline-block;background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.25);color:var(--red);padding:6px 16px;border-radius:100px;font-size:12px;font-weight:600;}
+
+.wrap{max-width:800px;margin:0 auto;padding:28px 16px 60px;position:relative;z-index:1;}
+
+/* INFO BOX */
+.info-box{background:rgba(0,201,167,0.04);border:1px solid var(--border);border-radius:16px;padding:18px 22px;margin-bottom:24px;display:flex;align-items:center;gap:16px;}
+.info-icon{font-size:2rem;flex-shrink:0;}
+.info-text h3{font-family:"Syne",sans-serif;font-size:14px;font-weight:700;color:var(--teal);margin-bottom:6px;}
+.info-text p{font-size:13px;color:var(--muted);line-height:1.6;}
+.info-text strong{color:var(--text);}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,0.5);margin-bottom:20px;}
+.card-title{font-family:"Syne",sans-serif;font-size:14px;font-weight:700;color:var(--teal);margin-bottom:18px;letter-spacing:0.5px;}
+
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px;}
+@media(max-width:520px){.grid3{grid-template-columns:1fr;}}
+.ig label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.7px;font-weight:500;}
+.ig input{width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:var(--text);font-size:17px;font-weight:700;font-family:"Syne",sans-serif;outline:none;transition:border 0.2s;text-align:center;}
+.ig input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,201,167,0.1);}
+.ig .sub{text-align:center;font-size:10px;color:var(--muted);margin-top:3px;}
+
+.total-row{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:rgba(0,201,167,0.05);border:1px solid var(--border);border-radius:12px;margin-bottom:16px;}
+.tl{font-size:13px;color:var(--muted);}
+.tv{font-family:"Syne",sans-serif;font-size:22px;font-weight:800;color:var(--teal);}
+
+.btn-calc{width:100%;padding:14px;background:linear-gradient(135deg,var(--teal),var(--teal2));border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:800;font-family:"Syne",sans-serif;cursor:pointer;transition:all 0.2s;letter-spacing:0.5px;}
+.btn-calc:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,201,167,0.3);}
+
+.result-card{background:var(--card);border:1px solid rgba(34,197,94,0.2);border-radius:20px;padding:26px;display:none;box-shadow:0 20px 60px rgba(0,0,0,0.5);margin-bottom:20px;}
+.result-card.show{display:block;}
+.rank-center{text-align:center;margin-bottom:22px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.rl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.rr{font-family:"Syne",sans-serif;font-size:clamp(2.2rem,7vw,3.8rem);font-weight:800;color:var(--green);line-height:1;}
+.rn{font-size:13px;color:var(--muted);margin-top:8px;}
+
+.bar-wrap{margin-bottom:20px;}
+.bar-top{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px;}
+.bar-track{height:8px;background:rgba(255,255,255,0.07);border-radius:100px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--teal),var(--green));transition:width 1s ease;}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+@media(max-width:400px){.info-grid{grid-template-columns:1fr;}}
+.iitem{padding:12px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;}
+.il{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;}
+.iv{font-family:"Syne",sans-serif;font-size:15px;font-weight:700;}
+.iv.g{color:var(--green);}.iv.a{color:var(--gold);}.iv.r{color:var(--red);}
+
+.contribute-box{margin-bottom:16px;padding:16px 18px;background:rgba(245,197,24,0.04);border:1px dashed rgba(245,197,24,0.2);border-radius:12px;text-align:center;}
+.contribute-box p{font-size:13px;color:#999;line-height:1.7;}
+.contribute-box strong{color:var(--gold);}
+.contribute-box a{color:var(--teal);font-weight:600;text-decoration:underline;}
+
+.college-btn{display:block;width:100%;padding:13px;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;border-radius:12px;text-align:center;color:#000;font-size:14px;font-weight:700;font-family:"Syne",sans-serif;cursor:pointer;text-decoration:none;transition:all 0.2s;margin-bottom:12px;}
+.college-btn:hover{transform:translateY(-1px);box-shadow:0 8px 25px rgba(245,197,24,0.3);}
+
+.disc{padding:12px 16px;background:rgba(248,113,113,0.05);border:1px solid rgba(248,113,113,0.15);border-radius:10px;font-size:12px;color:#f87171;line-height:1.6;text-align:center;}
+
+.ref-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-top:20px;}
+.ref-head{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.ref-head h3{font-family:"Syne",sans-serif;font-size:14px;font-weight:700;color:var(--teal);}
+.ref-head span{font-size:11px;color:var(--muted);}
+.table-outer{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;min-width:480px;}
+thead th{padding:10px 16px;text-align:left;font-size:10px;color:var(--teal);font-weight:600;text-transform:uppercase;letter-spacing:0.7px;background:rgba(0,201,167,0.05);}
+tbody tr{border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.15s;}
+tbody tr:hover{background:rgba(255,255,255,0.02);}
+tbody td{padding:10px 16px;font-size:13px;}
+.sc{font-weight:700;font-family:"Syne",sans-serif;color:#fff;}
+.rc{color:var(--green);font-weight:600;font-family:"Syne",sans-serif;}
+.nc{color:var(--muted);font-size:11px;}
+.tc span{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.t1{background:rgba(245,197,24,0.12);color:var(--gold);border:1px solid rgba(245,197,24,0.3);}
+.t2{background:rgba(34,197,94,0.1);color:var(--green);border:1px solid rgba(34,197,94,0.25);}
+.t3{background:rgba(96,165,250,0.1);color:var(--blue);border:1px solid rgba(96,165,250,0.25);}
+.t4{background:rgba(248,113,113,0.1);color:var(--red);border:1px solid rgba(248,113,113,0.25);}
+
+.footer{text-align:center;padding:28px 20px;color:var(--muted);font-size:12px;border-top:1px solid rgba(255,255,255,0.05);}
+.footer a{color:var(--teal);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="brand">VAMSI JOURNEY</div>
+  <span class="ts-badge">TELANGANA</span>
+  <h1>TS EAMCET <br><em>Rank Predictor</em></h1>
+  <p>Enter your subject marks to instantly estimate your TS EAMCET rank.</p>
+  <div class="pills">
+    <span class="pill">✅ <strong>700+</strong> Students Trusted</span>
+    <span class="pill">📊 2024 Pattern Based</span>
+    <span class="pill">🎯 100% EAMCET Score</span>
+    <span class="pill">📍 Telangana</span>
+  </div>
+  <div class="approx-badge">⚠️ Approximate estimates — real TS data collection in progress</div>
+</div>
+
+<div class="wrap">
+
+  <!-- INFO BOX -->
+  <div class="info-box">
+    <div class="info-icon">ℹ️</div>
+    <div class="info-text">
+      <h3>TS EAMCET — No IPE Weightage</h3>
+      <p>Unlike AP EAMCET, TS EAMCET rank is based <strong>100% on your EAMCET score</strong>. IPE / Intermediate marks have no weightage. Your rank depends entirely on how you perform in the entrance exam.</p>
+    </div>
+  </div>
+
+  <!-- INPUT -->
+  <div class="card">
+    <div class="card-title">📝 ENTER YOUR MARKS</div>
+    <div class="grid3">
+      <div class="ig">
+        <label>Mathematics</label>
+        <input type="number" id="iMath" placeholder="0" min="0" max="80" oninput="upd()"/>
+        <div class="sub">Max: 80</div>
+      </div>
+      <div class="ig">
+        <label>Physics</label>
+        <input type="number" id="iPhy" placeholder="0" min="0" max="40" oninput="upd()"/>
+        <div class="sub">Max: 40</div>
+      </div>
+      <div class="ig">
+        <label>Chemistry</label>
+        <input type="number" id="iChem" placeholder="0" min="0" max="40" oninput="upd()"/>
+        <div class="sub">Max: 40</div>
+      </div>
+    </div>
+
+    <div class="total-row">
+      <span class="tl">Total EAMCET Score</span>
+      <span><span class="tv" id="tTotal">0</span><span style="color:var(--muted);font-size:14px;"> / 160</span></span>
+    </div>
+
+    <button class="btn-calc" onclick="predict()">⚡ Predict My Rank</button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-card" id="resultCard">
+    <div class="rank-center">
+      <div class="rl">Your Estimated Rank</div>
+      <div class="rr" id="rRange">—</div>
+      <div class="rn" id="rNote">—</div>
+    </div>
+
+    <div class="bar-wrap">
+      <div class="bar-top"><span>Score Performance</span><span id="bPct">—</span></div>
+      <div class="bar-track"><div class="bar-fill" id="bFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="info-grid">
+      <div class="iitem"><div class="il">EAMCET Score</div><div class="iv a" id="iScore">—</div></div>
+      <div class="iitem"><div class="il">Out of 160</div><div class="iv g" id="iPct">—</div></div>
+      <div class="iitem"><div class="il">Performance</div><div class="iv" id="iPerf">—</div></div>
+      <div class="iitem"><div class="il">College Chances</div><div class="iv" id="iChance">—</div></div>
+    </div>
+
+    <div class="contribute-box">
+      <p>🙏 Help make this tool accurate for TS students!<br>
+      <strong>Share your actual TS EAMCET score & rank</strong> — takes 2 minutes.<br>
+      <a href="https://forms.gle/yN3dvbXyfeDBNHiv7" target="_blank">Fill the form here →</a></p>
+    </div>
+
+    <a href="ts-college-predictor.html" id="collegeBtn" class="college-btn">🎓 See TS Colleges For This Rank →</a>
+
+    <div class="disc">⚠️ Approximate estimate based on general TS EAMCET 2024 patterns. Real student data collection is in progress. Actual rank depends on exam difficulty & total candidates appearing.</div>
+  </div>
+
+  <!-- REF TABLE -->
+  <div class="ref-card">
+    <div class="ref-head">
+      <h3>📊 Score vs Rank Reference Table</h3>
+      <span>TS EAMCET 2024 — Approximate | ~1.8L Candidates</span>
+    </div>
+    <div class="table-outer">
+      <table>
+        <thead>
+          <tr>
+            <th>EAMCET Score</th>
+            <th>Estimated Rank Range</th>
+            <th>Tier</th>
+            <th>College Chances</th>
+          </tr>
+        </thead>
+        <tbody id="refBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Approximate data — real TS data collection in progress &nbsp;|&nbsp;
+  <a href="https://instagram.com/Vamsi_journey" target="_blank">@Vamsi_journey</a>
+  &nbsp;|&nbsp; © 2025 Vamsi Journey
+</div>
+
+<script>
+const TS_CURVE = [
+  {lo:155,hi:160,med:3,min:1,max:10,chance:"Top Govt — JNTUH/OU"},
+  {lo:150,hi:154,med:120,min:50,max:250,chance:"Top Govt Colleges"},
+  {lo:145,hi:149,med:450,min:200,max:800,chance:"Top Govt Colleges"},
+  {lo:140,hi:144,med:1300,min:700,max:2200,chance:"Top Govt Colleges"},
+  {lo:135,hi:139,med:2900,min:1800,max:4500,chance:"Good Govt Colleges"},
+  {lo:130,hi:134,med:5200,min:3500,max:7500,chance:"Good Govt Colleges"},
+  {lo:125,hi:129,med:8700,min:6000,max:12000,chance:"Top Private Colleges"},
+  {lo:120,hi:124,med:13500,min:9500,max:19000,chance:"Top Private Colleges"},
+  {lo:115,hi:119,med:20000,min:14000,max:28000,chance:"Good Private Colleges"},
+  {lo:110,hi:114,med:28000,min:20000,max:38000,chance:"Good Private Colleges"},
+  {lo:105,hi:109,med:37000,min:27000,max:50000,chance:"Average Private"},
+  {lo:100,hi:104,med:48000,min:36000,max:63000,chance:"Average Private"},
+  {lo:90,hi:99,med:65000,min:50000,max:85000,chance:"Average Private"},
+  {lo:80,hi:89,med:90000,min:72000,max:110000,chance:"Tier 3 Colleges"},
+  {lo:70,hi:79,med:115000,min:95000,max:135000,chance:"Tier 3 Colleges"},
+  {lo:60,hi:69,med:135000,min:115000,max:155000,chance:"Tier 3 Colleges"},
+  {lo:50,hi:59,med:155000,min:138000,max:170000,chance:"Low Chances"},
+  {lo:40,hi:49,med:170000,min:158000,max:182000,chance:"Very Low Chances"},
+  {lo:30,hi:39,med:182000,min:172000,max:192000,chance:"Very Low Chances"},
+];
+
+function interpolate(score){
+  for(let c of TS_CURVE) if(score>=c.lo&&score<=c.hi) return c.med;
+  if(score>160) return 1;
+  return 190000;
+}
+function getRange(score){
+  for(let c of TS_CURVE) if(score>=c.lo&&score<=c.hi) return [c.min,c.max];
+  return [1,5];
+}
+function fmt(n){
+  if(n>=100000) return (n/100000).toFixed(1)+'L';
+  if(n>=1000) return (n/1000).toFixed(1)+'K';
+  return n.toLocaleString();
+}
+
+function upd(){
+  const m=+document.getElementById('iMath').value||0;
+  const p=+document.getElementById('iPhy').value||0;
+  const c=+document.getElementById('iChem').value||0;
+  document.getElementById('tTotal').textContent=m+p+c;
+}
+
+function predict(){
+  const m=+document.getElementById('iMath').value||0;
+  const p=+document.getElementById('iPhy').value||0;
+  const c=+document.getElementById('iChem').value||0;
+  const total=m+p+c;
+
+  if(total<=0){alert('Please enter your EAMCET marks!');return;}
+  if(m>80||p>40||c>40){alert('Marks exceed maximum — please check!');return;}
+
+  const midRank=interpolate(total);
+  const [lo,hi]=getRange(total);
+  const pct=Math.round((total/160)*100);
+
+  let perf,perfCls,chance,chanceCls;
+  if(total>=140){perf='🏆 Exceptional';perfCls='g';}
+  else if(total>=120){perf='⭐ Very Good';perfCls='g';}
+  else if(total>=100){perf='✅ Good';perfCls='a';}
+  else if(total>=80){perf='📈 Average';perfCls='a';}
+  else{perf='📉 Below Avg';perfCls='r';}
+
+  if(midRank<=5000){chance='Top Govt Colleges';chanceCls='g';}
+  else if(midRank<=20000){chance='Good Private Colleges';chanceCls='g';}
+  else if(midRank<=60000){chance='Average Private';chanceCls='a';}
+  else{chance='Tier 3 Colleges';chanceCls='r';}
+
+  document.getElementById('rRange').textContent=fmt(lo)+' – '+fmt(hi);
+  document.getElementById('rNote').textContent='Most likely around '+midRank.toLocaleString()+' (TS EAMCET 2024 pattern)';
+  document.getElementById('iScore').textContent=total+' / 160';
+  document.getElementById('iPct').textContent=pct+'% of total';
+  document.getElementById('iPerf').textContent=perf;
+  document.getElementById('iPerf').className='iv '+perfCls;
+  document.getElementById('iChance').textContent=chance;
+  document.getElementById('iChance').className='iv '+chanceCls;
+  document.getElementById('bPct').textContent=pct+'%';
+  document.getElementById('bFill').style.width=pct+'%';
+
+  document.getElementById('collegeBtn').href='ts-college-predictor.html?rank='+midRank;
+  document.getElementById('collegeBtn').textContent='🎓 See TS Colleges For Rank ~'+midRank.toLocaleString()+' →';
+
+  const rc=document.getElementById('resultCard');
+  rc.classList.add('show');
+  rc.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function buildTable(){
+  document.getElementById('refBody').innerHTML=TS_CURVE.map(c=>{
+    let tier,tcls;
+    if(c.lo>=140){tier='Exceptional';tcls='t1';}
+    else if(c.lo>=120){tier='Very Good';tcls='t2';}
+    else if(c.lo>=90){tier='Good';tcls='t3';}
+    else{tier='Below Avg';tcls='t4';}
+    return `<tr>
+      <td class="sc">${c.lo} – ${c.hi}</td>
+      <td class="rc">${fmt(c.min)} – ${fmt(c.max)}</td>
+      <td class="tc"><span class="${tcls}">${tier}</span></td>
+      <td class="nc">${c.chance}</td>
+    </tr>`;
+  }).join('');
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Enter')predict();});
+buildTable();
+</script>
+</body>
+</html>

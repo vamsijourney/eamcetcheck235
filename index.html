@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vamsi Journey | EAMCET Tools Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cabinet+Grotesk:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ap: #F5C518;
+  --ap2: #ff9d00;
+  --ts: #00e5b4;
+  --ts2: #00917a;
+  --bg: #050508;
+  --surface: #0c0c12;
+  --text: #f0f0f8;
+  --muted: #555568;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--ap);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(245,197,24,0.4);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease, width 0.3s, height 0.3s, border-color 0.3s;
+}
+.cursor.hovered { width: 20px; height: 20px; }
+.cursor-ring.hovered { width: 56px; height: 56px; border-color: rgba(245,197,24,0.8); }
+
+/* NOISE OVERLAY */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.6;
+}
+
+/* ANIMATED GRID BG */
+.grid-bg {
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(245,197,24,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245,197,24,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridMove 20s linear infinite;
+}
+@keyframes gridMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
+
+/* FLOATING ORBS */
+.orb {
+  position: fixed; border-radius: 50%;
+  filter: blur(80px); pointer-events: none; z-index: 0;
+}
+.orb1 { width: 400px; height: 400px; background: rgba(245,197,24,0.06); top: -100px; left: -100px; animation: orbFloat1 12s ease-in-out infinite; }
+.orb2 { width: 300px; height: 300px; background: rgba(0,229,180,0.05); bottom: -50px; right: -50px; animation: orbFloat2 15s ease-in-out infinite; }
+.orb3 { width: 200px; height: 200px; background: rgba(245,197,24,0.04); top: 50%; left: 50%; animation: orbFloat3 10s ease-in-out infinite; }
+@keyframes orbFloat1 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(40px,60px);} }
+@keyframes orbFloat2 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(-50px,-40px);} }
+@keyframes orbFloat3 { 0%,100%{transform:translate(-50%,-50%);} 50%{transform:translate(-40%,-60%);} }
+
+/* MAIN CONTAINER */
+.container {
+  position: relative; z-index: 2;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 40px 20px;
+}
+
+/* HEADER */
+.header { text-align: center; margin-bottom: 64px; }
+
+.brand-line {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-bottom: 20px;
+  opacity: 0; animation: fadeUp 0.8s ease forwards;
+}
+.brand-dot {
+  width: 8px; height: 8px; background: var(--ap);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.5);opacity:0.5;} }
+.brand-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px; letter-spacing: 4px;
+  color: var(--ap); opacity: 0.8;
+}
+
+.main-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  line-height: 0.9;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  opacity: 0; animation: fadeUp 0.8s 0.1s ease forwards;
+}
+.main-title .line1 { display: block; color: var(--text); }
+.main-title .line2 {
+  display: block;
+  background: linear-gradient(135deg, var(--ap), var(--ts));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: 16px; color: var(--muted); max-width: 420px;
+  margin: 0 auto 28px; line-height: 1.6;
+  opacity: 0; animation: fadeUp 0.8s 0.2s ease forwards;
+}
+
+.trust-strip {
+  display: flex; justify-content: center; align-items: center; gap: 24px;
+  flex-wrap: wrap;
+  opacity: 0; animation: fadeUp 0.8s 0.3s ease forwards;
+}
+.trust-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--muted); font-weight: 500;
+}
+.trust-item .dot { width: 6px; height: 6px; background: var(--ap); border-radius: 50%; }
+.trust-sep { width: 1px; height: 16px; background: rgba(255,255,255,0.08); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* STATE SECTION LABELS */
+.state-section { width: 100%; max-width: 960px; margin-bottom: 48px; }
+.state-section:last-child { margin-bottom: 0; }
+
+.state-label {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 20px;
+  opacity: 0; animation: fadeUp 0.8s ease forwards;
+}
+.state-label-ap { animation-delay: 0.4s; }
+.state-label-ts { animation-delay: 0.7s; }
+
+.state-pill {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px; letter-spacing: 3px;
+  padding: 5px 14px; border-radius: 100px;
+}
+.ap-pill { background: rgba(245,197,24,0.1); border: 1px solid rgba(245,197,24,0.3); color: var(--ap); }
+.ts-pill { background: rgba(0,229,180,0.1); border: 1px solid rgba(0,229,180,0.3); color: var(--ts); }
+.state-line { flex: 1; height: 1px; }
+.ap-line { background: linear-gradient(90deg, rgba(245,197,24,0.3), transparent); }
+.ts-line { background: linear-gradient(90deg, rgba(0,229,180,0.3), transparent); }
+.state-count { font-size: 12px; color: var(--muted); }
+
+/* CARDS GRID */
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+}
+@media(max-width: 600px) { .cards-grid { grid-template-columns: 1fr; } }
+
+/* TOOL CARD */
+.tool-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+  opacity: 0;
+  animation: cardIn 0.7s ease forwards;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.tool-card:hover { transform: translateY(-6px) scale(1.02); }
+.tool-card:hover .card-arrow { transform: translate(4px,-4px); }
+.tool-card:hover .card-glow { opacity: 1; }
+.tool-card:hover .card-icon { transform: scale(1.1) rotate(-5deg); }
+
+.c1 { animation-delay: 0.45s; }
+.c2 { animation-delay: 0.55s; }
+.c3 { animation-delay: 0.75s; }
+.c4 { animation-delay: 0.85s; }
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* AP CARDS */
+.ap-card {
+  background: linear-gradient(135deg, #111108 0%, #1a1600 100%);
+  border: 1px solid rgba(245,197,24,0.15);
+}
+.ap-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(245,197,24,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* TS CARDS */
+.ts-card {
+  background: linear-gradient(135deg, #061410 0%, #001a15 100%);
+  border: 1px solid rgba(0,229,180,0.15);
+}
+.ts-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(0,229,180,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* GLOW */
+.card-glow {
+  position: absolute; inset: -1px;
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.ap-glow { box-shadow: 0 0 30px rgba(245,197,24,0.2), inset 0 0 30px rgba(245,197,24,0.05); border: 1px solid rgba(245,197,24,0.4); }
+.ts-glow { box-shadow: 0 0 30px rgba(0,229,180,0.2), inset 0 0 30px rgba(0,229,180,0.05); border: 1px solid rgba(0,229,180,0.4); }
+
+.card-inner { padding: 28px; position: relative; z-index: 1; }
+
+.card-top {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; margin-bottom: 20px;
+}
+.card-icon {
+  font-size: 2.4rem;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  line-height: 1;
+}
+.card-arrow {
+  font-size: 20px;
+  transition: transform 0.3s ease;
+  opacity: 0.4;
+}
+.ap-card .card-arrow { color: var(--ap); }
+.ts-card .card-arrow { color: var(--ts); }
+
+.card-tag {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 100px;
+  margin-bottom: 10px; display: inline-block;
+}
+.ap-tag { background: rgba(245,197,24,0.1); color: var(--ap); border: 1px solid rgba(245,197,24,0.2); }
+.ts-tag { background: rgba(0,229,180,0.1); color: var(--ts); border: 1px solid rgba(0,229,180,0.2); }
+
+.card-title-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem; letter-spacing: 1px;
+  line-height: 1; margin-bottom: 8px; color: var(--text);
+}
+.card-desc { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 20px; }
+
+.card-footer {
+  display: flex; justify-content: space-between;
+  align-items: center;
+}
+.card-stat {
+  font-size: 12px; font-weight: 700;
+}
+.ap-stat { color: rgba(245,197,24,0.6); }
+.ts-stat { color: rgba(0,229,180,0.6); }
+
+.card-cta {
+  font-size: 12px; font-weight: 800;
+  padding: 8px 16px; border-radius: 100px;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+}
+.ap-cta { background: rgba(245,197,24,0.1); color: var(--ap); border: 1px solid rgba(245,197,24,0.3); }
+.ts-cta { background: rgba(0,229,180,0.1); color: var(--ts); border: 1px solid rgba(0,229,180,0.3); }
+.tool-card:hover .ap-cta { background: var(--ap); color: #000; }
+.tool-card:hover .ts-cta { background: var(--ts); color: #000; }
+
+/* DIVIDER */
+.divider {
+  width: 100%; max-width: 960px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+  margin: 48px 0;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center; position: relative; z-index: 2;
+  padding: 0 20px 40px;
+  opacity: 0; animation: fadeUp 0.8s 1s ease forwards;
+}
+.footer p { font-size: 12px; color: var(--muted); }
+.footer a { color: var(--ap); text-decoration: none; }
+
+/* SCANLINE EFFECT on cards */
+.tool-card::after {
+  content: '';
+  position: absolute; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  animation: scanline 4s linear infinite;
+  pointer-events: none;
+}
+@keyframes scanline {
+  0% { top: -2px; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.c1::after { animation-delay: 0s; }
+.c2::after { animation-delay: 1s; }
+.c3::after { animation-delay: 2s; }
+.c4::after { animation-delay: 3s; }
+
+/* TICKER */
+.ticker-wrap {
+  width: 100%; overflow: hidden;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 10px 0; margin-bottom: 60px;
+  position: relative; z-index: 2;
+  opacity: 0; animation: fadeUp 0.8s 0.35s ease forwards;
+}
+.ticker {
+  display: flex; gap: 48px;
+  white-space: nowrap;
+  animation: ticker 20s linear infinite;
+  width: max-content;
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.ticker-item {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px; letter-spacing: 3px;
+  color: var(--muted);
+  display: flex; align-items: center; gap: 12px;
+}
+.ticker-item span { color: var(--ap); }
+.ticker-item.ts-item span { color: var(--ts); }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="grid-bg"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="ticker-item"><span>★</span> AP RANK PREDICTOR</div>
+    <div class="ticker-item ts-item"><span>★</span> TS RANK PREDICTOR</div>
+    <div class="ticker-item"><span>★</span> AP COLLEGE PREDICTOR</div>
+    <div class="ticker-item ts-item"><span>★</span> TS COLLEGE PREDICTOR</div>
+    <div class="ticker-item"><span>★</span> 700+ STUDENTS TRUSTED</div>
+    <div class="ticker-item ts-item"><span>★</span> FREE TOOLS</div>
+    <div class="ticker-item"><span>★</span> REAL DATA</div>
+    <div class="ticker-item ts-item"><span>★</span> EAMCET 2026</div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item"><span>★</span> AP RANK PREDICTOR</div>
+    <div class="ticker-item ts-item"><span>★</span> TS RANK PREDICTOR</div>
+    <div class="ticker-item"><span>★</span> AP COLLEGE PREDICTOR</div>
+    <div class="ticker-item ts-item"><span>★</span> TS COLLEGE PREDICTOR</div>
+    <div class="ticker-item"><span>★</span> 700+ STUDENTS TRUSTED</div>
+    <div class="ticker-item ts-item"><span>★</span> FREE TOOLS</div>
+    <div class="ticker-item"><span>★</span> REAL DATA</div>
+    <div class="ticker-item ts-item"><span>★</span> EAMCET 2026</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand-line">
+      <div class="brand-dot"></div>
+      <span class="brand-text">Vamsi Journey</span>
+      <div class="brand-dot"></div>
+    </div>
+
+    <h1 class="main-title">
+      <span class="line1">EAMCET</span>
+      <span class="line2">TOOLS HUB</span>
+    </h1>
+
+    <p class="subtitle">Everything you need — rank prediction, college shortlisting. Pick your state and get started.</p>
+
+    <div class="trust-strip">
+      <div class="trust-item"><div class="dot"></div>700+ Students</div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><div class="dot"></div>AP & TS Data</div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><div class="dot"></div>Free Tools</div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><div class="dot"></div>2024 Official Data</div>
+    </div>
+  </div>
+
+  <!-- AP SECTION -->
+  <div class="state-section">
+    <div class="state-label state-label-ap">
+      <div class="state-pill ap-pill">Andhra Pradesh</div>
+      <div class="state-line ap-line"></div>
+      <span class="state-count">2 Tools</span>
+    </div>
+
+    <div class="cards-grid">
+
+      <!-- AP RANK PREDICTOR -->
+      <a href="ap-rank-predictor.html" class="tool-card ap-card c1">
+        <div class="card-glow ap-glow"></div>
+        <div class="card-inner">
+          <div class="card-top">
+            <div class="card-icon">📊</div>
+            <div class="card-arrow">↗</div>
+          </div>
+          <div class="card-tag ap-tag">AP EAMCET</div>
+          <div class="card-title-text">Rank Predictor</div>
+          <div class="card-desc">Enter your Maths, Physics, Chemistry marks + IPE score. Get your estimated rank instantly using the 75/25 formula.</div>
+          <div class="card-footer">
+            <span class="card-stat ap-stat">Real student data · 98 responses</span>
+            <span class="card-cta ap-cta">Open →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- AP COLLEGE PREDICTOR -->
+      <a href="ap-clg.html" class="tool-card ap-card c2">
+        <div class="card-glow ap-glow"></div>
+        <div class="card-inner">
+          <div class="card-top">
+            <div class="card-icon">🏫</div>
+            <div class="card-arrow">↗</div>
+          </div>
+          <div class="card-tag ap-tag">AP EAMCET</div>
+          <div class="card-title-text">College Predictor</div>
+          <div class="card-desc">Enter your rank and instantly see every AP college you qualify for. Filter by branch, district, category and more.</div>
+          <div class="card-footer">
+            <span class="card-stat ap-stat">1,565 colleges · Official 2024 data</span>
+            <span class="card-cta ap-cta">Open →</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- TS SECTION -->
+  <div class="state-section">
+    <div class="state-label state-label-ts">
+      <div class="state-pill ts-pill">Telangana</div>
+      <div class="state-line ts-line"></div>
+      <span class="state-count">2 Tools</span>
+    </div>
+
+    <div class="cards-grid">
+
+      <!-- TS RANK PREDICTOR -->
+      <a href="ts-rank-predictor.html" class="tool-card ts-card c3">
+        <div class="card-glow ts-glow"></div>
+        <div class="card-inner">
+          <div class="card-top">
+            <div class="card-icon">📈</div>
+            <div class="card-arrow">↗</div>
+          </div>
+          <div class="card-tag ts-tag">TS EAMCET</div>
+          <div class="card-title-text">Rank Predictor</div>
+          <div class="card-desc">Enter your Maths, Physics, Chemistry marks. 100% EAMCET score — no IPE weightage in TS. Get your rank estimate.</div>
+          <div class="card-footer">
+            <span class="card-stat ts-stat">Pattern based · ~1.8L candidates</span>
+            <span class="card-cta ts-cta">Open →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- TS COLLEGE PREDICTOR -->
+      <a href="ts-clg.html" class="tool-card ts-card c4">
+        <div class="card-glow ts-glow"></div>
+        <div class="card-inner">
+          <div class="card-top">
+            <div class="card-icon">🎓</div>
+            <div class="card-arrow">↗</div>
+          </div>
+          <div class="card-tag ts-tag">TS EAMCET</div>
+          <div class="card-title-text">College Predictor</div>
+          <div class="card-desc">Enter your rank and see every Telangana college you can get. Filter by branch, district, JNTUH/OU affiliation and more.</div>
+          <div class="card-footer">
+            <span class="card-stat ts-stat">971 colleges · Official 2024 data</span>
+            <span class="card-cta ts-cta">Open →</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>Built by <a href="https://instagram.com/Vamsi_journey" target="_blank">@Vamsi_journey</a> &nbsp;·&nbsp; Trusted by 700+ EAMCET Students &nbsp;·&nbsp; © 2026 Vamsi Journey</p>
+</div>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+
+function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+document.querySelectorAll('a').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.classList.add('hovered');
+    ring.classList.add('hovered');
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.classList.remove('hovered');
+    ring.classList.remove('hovered');
+  });
+});
+
+// Parallax orbs on mouse move
+document.addEventListener('mousemove', e => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 20;
+  const y = (e.clientY / window.innerHeight - 0.5) * 20;
+  document.querySelector('.orb1').style.transform = `translate(${x}px,${y}px)`;
+  document.querySelector('.orb2').style.transform = `translate(${-x}px,${-y}px)`;
+});
+</script>
+</body>
+</html>

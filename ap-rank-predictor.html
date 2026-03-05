@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP EAMCET Rank Predictor  | Vamsi Journey</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#F5C518; --gold2:#ff9d00; --bg:#08080f; --card:#0e0e1a;
+  --border:rgba(245,197,24,0.15); --text:#e8e8f0; --muted:#6b6b85;
+  --green:#22c55e; --blue:#60a5fa; --red:#f87171; --teal:#00c9a7;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:"VAMSI JOURNEY";position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-family:"Syne",sans-serif;font-size:clamp(40px,8vw,90px);font-weight:800;color:rgba(245,197,24,0.03);white-space:nowrap;pointer-events:none;z-index:0;letter-spacing:8px;}
+
+/* HERO */
+.hero{position:relative;padding:44px 20px 36px;text-align:center;background:radial-gradient(ellipse 80% 55% at 50% 0%,rgba(245,197,24,0.08) 0%,transparent 70%);border-bottom:1px solid var(--border);}
+.hero::after{content:"";position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:180px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.brand{display:inline-flex;align-items:center;gap:8px;background:rgba(245,197,24,0.08);border:1px solid var(--border);padding:5px 16px 5px 12px;border-radius:100px;font-family:"Syne",sans-serif;font-size:12px;font-weight:700;color:var(--gold);letter-spacing:1px;margin-bottom:20px;}
+.brand::before{content:"⚡";}
+.hero h1{font-family:"Syne",sans-serif;font-size:clamp(1.8rem,5vw,3.2rem);font-weight:800;line-height:1.1;margin-bottom:10px;letter-spacing:-1px;}
+.hero h1 em{font-style:normal;color:var(--gold);}
+.hero p{color:var(--muted);font-size:15px;max-width:480px;margin:0 auto 16px;line-height:1.6;}
+.pills{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.pill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:5px 12px;border-radius:100px;font-size:12px;color:#999;}
+.pill strong{color:var(--gold);}
+.data-badge{margin-top:14px;display:inline-block;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--green);padding:6px 16px;border-radius:100px;font-size:12px;font-weight:600;}
+
+/* MAIN */
+.wrap{max-width:800px;margin:0 auto;padding:28px 16px 60px;position:relative;z-index:1;}
+
+/* FORMULA BOX */
+.formula-box{background:rgba(245,197,24,0.05);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:24px;}
+.formula-box h3{font-family:"Syne",sans-serif;font-size:13px;font-weight:700;color:var(--gold);margin-bottom:14px;letter-spacing:0.5px;}
+.formula-steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+@media(max-width:550px){.formula-steps{grid-template-columns:1fr;}}
+.fstep{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:12px 14px;text-align:center;}
+.fstep .fn{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.fstep .fv{font-family:"Syne",sans-serif;font-size:13px;font-weight:700;color:var(--gold);line-height:1.4;}
+
+/* CARD */
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,0.4);margin-bottom:20px;}
+.card-title{font-family:"Syne",sans-serif;font-size:14px;font-weight:700;color:var(--gold);margin-bottom:18px;letter-spacing:0.5px;}
+
+/* INPUTS */
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px;}
+@media(max-width:520px){.grid3{grid-template-columns:1fr;}}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+@media(max-width:400px){.grid2{grid-template-columns:1fr;}}
+.ig label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.7px;font-weight:500;}
+.ig input{width:100%;padding:11px 14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--text);font-size:17px;font-weight:700;font-family:"Syne",sans-serif;outline:none;transition:border 0.2s;text-align:center;}
+.ig input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(245,197,24,0.1);}
+.ig .sub{text-align:center;font-size:10px;color:var(--muted);margin-top:3px;}
+
+.total-row{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:rgba(245,197,24,0.06);border:1px solid var(--border);border-radius:12px;margin-bottom:16px;}
+.tl{font-size:13px;color:var(--muted);}
+.tv{font-family:"Syne",sans-serif;font-size:22px;font-weight:800;color:var(--gold);}
+
+.btn-calc{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;border-radius:12px;color:#000;font-size:15px;font-weight:800;font-family:"Syne",sans-serif;cursor:pointer;transition:all 0.2s;letter-spacing:0.5px;}
+.btn-calc:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(245,197,24,0.3);}
+
+/* MERIT SCORE */
+.merit-row{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:rgba(0,201,167,0.06);border:1px solid rgba(0,201,167,0.2);border-radius:12px;margin-bottom:16px;display:none;}
+.merit-row.show{display:flex;}
+.ml{font-size:13px;color:var(--muted);}
+.mv{font-family:"Syne",sans-serif;font-size:22px;font-weight:800;color:var(--teal);}
+
+/* RESULT */
+.result-card{background:var(--card);border:1px solid rgba(34,197,94,0.2);border-radius:20px;padding:26px;display:none;box-shadow:0 20px 60px rgba(0,0,0,0.4);margin-bottom:20px;}
+.result-card.show{display:block;}
+.rank-center{text-align:center;margin-bottom:22px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.rl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.rr{font-family:"Syne",sans-serif;font-size:clamp(2.2rem,7vw,3.8rem);font-weight:800;color:var(--green);line-height:1;}
+.rn{font-size:13px;color:var(--muted);margin-top:8px;}
+
+.bar-wrap{margin-bottom:20px;}
+.bar-top{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px;}
+.bar-track{height:8px;background:rgba(255,255,255,0.07);border-radius:100px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--gold),var(--green));transition:width 1s ease;}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+@media(max-width:400px){.info-grid{grid-template-columns:1fr;}}
+.iitem{padding:12px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;}
+.il{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;}
+.iv{font-family:"Syne",sans-serif;font-size:15px;font-weight:700;}
+.iv.g{color:var(--green);} .iv.a{color:var(--gold);} .iv.r{color:var(--red);}
+
+.nearby-section{margin-bottom:18px;}
+.nearby-title{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;}
+.nearby-list{display:flex;flex-wrap:wrap;gap:8px;}
+.nitem{padding:6px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;font-size:12px;color:#aaa;}
+.nitem strong{color:var(--gold);}
+
+.college-btn{display:block;width:100%;padding:13px;background:linear-gradient(135deg,var(--teal),#007a65);border:none;border-radius:12px;text-align:center;color:#fff;font-size:14px;font-weight:700;font-family:"Syne",sans-serif;cursor:pointer;text-decoration:none;transition:all 0.2s;margin-bottom:10px;}
+.college-btn:hover{transform:translateY(-1px);box-shadow:0 8px 25px rgba(0,201,167,0.3);}
+
+.disc{padding:12px 16px;background:rgba(248,113,113,0.05);border:1px solid rgba(248,113,113,0.15);border-radius:10px;font-size:12px;color:#f87171;line-height:1.6;text-align:center;}
+
+/* REF TABLE */
+.ref-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-top:20px;}
+.ref-head{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.ref-head h3{font-family:"Syne",sans-serif;font-size:14px;font-weight:700;color:var(--gold);}
+.ref-head span{font-size:11px;color:var(--muted);}
+.table-outer{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;min-width:480px;}
+thead th{padding:10px 16px;text-align:left;font-size:10px;color:var(--gold);font-weight:600;text-transform:uppercase;letter-spacing:0.7px;background:rgba(245,197,24,0.05);}
+tbody tr{border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.15s;}
+tbody tr:hover{background:rgba(255,255,255,0.03);}
+tbody td{padding:10px 16px;font-size:13px;}
+.sc{font-weight:700;font-family:"Syne",sans-serif;color:#fff;}
+.rc{color:var(--green);font-weight:600;font-family:"Syne",sans-serif;}
+.nc{color:var(--muted);font-size:11px;}
+.tc span{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.t1{background:rgba(245,197,24,0.12);color:var(--gold);border:1px solid rgba(245,197,24,0.3);}
+.t2{background:rgba(34,197,94,0.1);color:var(--green);border:1px solid rgba(34,197,94,0.25);}
+.t3{background:rgba(96,165,250,0.1);color:var(--blue);border:1px solid rgba(96,165,250,0.25);}
+.t4{background:rgba(248,113,113,0.1);color:var(--red);border:1px solid rgba(248,113,113,0.25);}
+
+.footer{text-align:center;padding:28px 20px;color:var(--muted);font-size:12px;border-top:1px solid rgba(255,255,255,0.05);}
+.footer a{color:var(--gold);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="brand">VAMSI JOURNEY</div>
+  <h1>AP EAMCET <br><em>Rank Predictor</em></h1>
+  <p>Enter your marks + IPE score to get your estimated rank with the new 75/25 weightage formula.</p>
+  <div class="pills">
+    <span class="pill">✅ <strong>700+</strong> Students Trusted</span>
+    <span class="pill">📊 Real Student Data</span>
+    <span class="pill">🧮 IPE Weightage Included</span>
+  </div>
+  <div class="data-badge">✅ Built using real data from 98 AP EAMCET students</div>
+</div>
+
+<div class="wrap">
+
+  <!-- FORMULA BOX -->
+  <div class="formula-box">
+    <h3>📐 HOW AP EAMCET 2026 RANK IS CALCULATED</h3>
+    <div class="formula-steps">
+      <div class="fstep">
+        <div class="fn">Step 1 — EAMCET (75%)</div>
+        <div class="fv">(Score ÷ 160) × 75</div>
+      </div>
+      <div class="fstep">
+        <div class="fn">Step 2 — IPE (25%)</div>
+        <div class="fv">(IPE ÷ 600) × 25</div>
+      </div>
+      <div class="fstep">
+        <div class="fn">Step 3 — Merit Score</div>
+        <div class="fv">Step 1 + Step 2</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INPUT CARD -->
+  <div class="card">
+    <div class="card-title">📝 ENTER YOUR MARKS</div>
+    <div class="grid3">
+      <div class="ig">
+        <label>Mathematics</label>
+        <input type="number" id="iMath" placeholder="0" min="0" max="80" oninput="upd()"/>
+        <div class="sub">Max: 80</div>
+      </div>
+      <div class="ig">
+        <label>Physics</label>
+        <input type="number" id="iPhy" placeholder="0" min="0" max="40" oninput="upd()"/>
+        <div class="sub">Max: 40</div>
+      </div>
+      <div class="ig">
+        <label>Chemistry</label>
+        <input type="number" id="iChem" placeholder="0" min="0" max="40" oninput="upd()"/>
+        <div class="sub">Max: 40</div>
+      </div>
+    </div>
+
+    <div class="total-row">
+      <span class="tl">EAMCET Total Score</span>
+      <span><span class="tv" id="tTotal">0</span><span style="color:var(--muted);font-size:14px;"> / 160</span></span>
+    </div>
+
+    <div class="grid2">
+      <div class="ig">
+        <label>IPE Marks (Groups)</label>
+        <input type="number" id="iIpe" placeholder="e.g. 560" min="0" max="600" oninput="upd()"/>
+        <div class="sub">Physics + Chemistry + Maths out of 600</div>
+      </div>
+      <div class="ig">
+        <label>IPE % (auto)</label>
+        <input type="number" id="iIpePct" placeholder="—" readonly style="opacity:0.6;cursor:not-allowed;font-size:17px;"/>
+        <div class="sub">Minimum 45% required</div>
+      </div>
+    </div>
+
+    <div class="merit-row" id="meritRow">
+      <span class="ml">Calculated Merit Score</span>
+      <span><span class="mv" id="tMerit">—</span><span style="color:var(--muted);font-size:14px;"> / 100</span></span>
+    </div>
+
+    <button class="btn-calc" onclick="predict()">⚡ Predict My Rank</button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-card" id="resultCard">
+    <div class="rank-center">
+      <div class="rl">Your Estimated Rank</div>
+      <div class="rr" id="rRange">—</div>
+      <div class="rn" id="rNote">—</div>
+    </div>
+
+    <div class="bar-wrap">
+      <div class="bar-top"><span>Score Performance</span><span id="bPct">—</span></div>
+      <div class="bar-track"><div class="bar-fill" id="bFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="info-grid">
+      <div class="iitem"><div class="il">EAMCET Score</div><div class="iv a" id="iScore">—</div></div>
+      <div class="iitem"><div class="il">Merit Score</div><div class="iv g" id="iMerit">—</div></div>
+      <div class="iitem"><div class="il">Performance</div><div class="iv" id="iPerf">—</div></div>
+      <div class="iitem"><div class="il">College Chances</div><div class="iv" id="iChance">—</div></div>
+    </div>
+
+    <div class="nearby-section">
+      <div class="nearby-title">📊 Similar students from our data</div>
+      <div class="nearby-list" id="nearbyList"></div>
+    </div>
+
+    <a href="college-predictor.html" id="collegeBtn" class="college-btn">🎓 See Colleges For This Rank →</a>
+
+    <div class="disc">⚠️ Estimate based on 98 real student responses. Actual rank depends on exam difficulty & number of candidates appearing. Use for planning only.</div>
+  </div>
+
+  <!-- REFERENCE TABLE -->
+  <div class="ref-card">
+    <div class="ref-head">
+      <h3>📊 Score vs Rank Reference — Real Data</h3>
+      <span id="sampleCount">Based on 98 AP student responses</span>
+    </div>
+    <div class="table-outer">
+      <table>
+        <thead>
+          <tr>
+            <th>EAMCET Score</th>
+            <th>Typical Rank Range</th>
+            <th>Tier</th>
+            <th>Samples</th>
+          </tr>
+        </thead>
+        <tbody id="refBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Built using real data from AP EAMCET students &nbsp;|&nbsp;
+  <a href="https://instagram.com/Vamsi_journey" target="_blank">@Vamsi_journey</a>
+  &nbsp;|&nbsp; © 2025 Vamsi Journey
+</div>
+
+<script>
+const POINTS = [{"s": 160.0, "r": 10, "i": 402.0}, {"s": 92.0, "r": 3822, "i": 594.0}, {"s": 89.0, "r": 2005, "i": 580.0}, {"s": 83.9, "r": 2951, "i": 581.0}, {"s": 80.0, "r": 3533, "i": 593.0}, {"s": 80.0, "r": 4513, "i": null}, {"s": 78.0, "r": 4322, "i": 599.0}, {"s": 76.0, "r": 4414, "i": 595.0}, {"s": 76.0, "r": 4964, "i": null}, {"s": 76.0, "r": 4757, "i": null}, {"s": 76.0, "r": 6200, "i": 589.0}, {"s": 75.0, "r": 5031, "i": 576.0}, {"s": 75.0, "r": 5392, "i": 598.0}, {"s": 74.0, "r": 4539, "i": 598.0}, {"s": 72.0, "r": 7024, "i": 570.0}, {"s": 71.0, "r": 6538, "i": null}, {"s": 71.0, "r": 5648, "i": 588.0}, {"s": 70.0, "r": 11925, "i": 570.0}, {"s": 70.0, "r": 7273, "i": null}, {"s": 70.0, "r": 7154, "i": 580.0}, {"s": 70.0, "r": 7256, "i": 590.0}, {"s": 69.2, "r": 8136, "i": 591.0}, {"s": 69.0, "r": 8100, "i": null}, {"s": 68.1, "r": 8573, "i": null}, {"s": 68.0, "r": 8804, "i": null}, {"s": 68.0, "r": 14000, "i": null}, {"s": 68.0, "r": 13103, "i": null}, {"s": 68.0, "r": 8204, "i": 598.0}, {"s": 68.0, "r": 24138, "i": 420.0}, {"s": 67.0, "r": 8597, "i": 598.0}, {"s": 67.0, "r": 8971, "i": 594.0}, {"s": 67.0, "r": 10371, "i": null}, {"s": 67.0, "r": 9512, "i": 586.0}, {"s": 66.0, "r": 12946, "i": 594.0}, {"s": 66.0, "r": 8250, "i": null}, {"s": 65.0, "r": 9919, "i": 590.0}, {"s": 65.0, "r": 10246, "i": 600.0}, {"s": 64.0, "r": 15017, "i": 596.0}, {"s": 64.0, "r": 10626, "i": 600.0}, {"s": 64.0, "r": 17053, "i": 541.0}, {"s": 63.0, "r": 34456, "i": 580.0}, {"s": 61.0, "r": 18253, "i": null}, {"s": 61.0, "r": 14931, "i": null}, {"s": 61.0, "r": 17525, "i": 572.0}, {"s": 61.0, "r": 14513, "i": null}, {"s": 60.0, "r": 22680, "i": 530.0}, {"s": 60.0, "r": 42862, "i": null}, {"s": 58.0, "r": 31241, "i": null}, {"s": 58.0, "r": 18875, "i": 584.0}, {"s": 58.0, "r": 18457, "i": 531.0}, {"s": 57.0, "r": 24046, "i": null}, {"s": 57.0, "r": 17348, "i": 587.0}, {"s": 56.6, "r": 22928, "i": 574.0}, {"s": 56.0, "r": 26941, "i": 554.0}, {"s": 56.0, "r": 24398, "i": null}, {"s": 56.0, "r": 21523, "i": 586.0}, {"s": 56.0, "r": 47644, "i": 520.0}, {"s": 56.0, "r": 30000, "i": null}, {"s": 56.0, "r": 2772, "i": 509.0}, {"s": 55.0, "r": 22604, "i": null}, {"s": 55.0, "r": 43192, "i": 510.0}, {"s": 54.0, "r": 29476, "i": 556.0}, {"s": 54.0, "r": 32510, "i": 510.0}, {"s": 54.0, "r": 26541, "i": 500.0}, {"s": 54.0, "r": 31150, "i": null}, {"s": 54.0, "r": 18152, "i": 596.0}, {"s": 53.0, "r": 58371, "i": 515.0}, {"s": 53.0, "r": 31380, "i": null}, {"s": 53.0, "r": 3200, "i": 571.0}, {"s": 53.0, "r": 29739, "i": null}, {"s": 52.3, "r": 16572, "i": null}, {"s": 52.0, "r": 30021, "i": null}, {"s": 52.0, "r": 46789, "i": 550.0}, {"s": 52.0, "r": 38700, "i": null}, {"s": 51.0, "r": 4770, "i": null}, {"s": 51.0, "r": 50000, "i": 496.0}, {"s": 50.0, "r": 67802, "i": 509.0}, {"s": 50.0, "r": 28242, "i": 594.0}, {"s": 50.0, "r": 18650, "i": null}, {"s": 49.3, "r": 28391, "i": null}, {"s": 48.4, "r": 37228, "i": null}, {"s": 48.0, "r": 45000, "i": null}, {"s": 47.0, "r": 53617, "i": 577.0}, {"s": 46.0, "r": 48484, "i": null}, {"s": 46.0, "r": 64000, "i": 490.0}, {"s": 46.0, "r": 45607, "i": null}, {"s": 45.0, "r": 53934, "i": 589.0}, {"s": 45.0, "r": 65081, "i": 571.0}, {"s": 45.0, "r": 146563, "i": 366.0}, {"s": 44.0, "r": 76672, "i": 558.0}, {"s": 44.0, "r": 80000, "i": null}, {"s": 44.0, "r": 144333, "i": 400.0}, {"s": 44.0, "r": 78465, "i": 550.0}, {"s": 43.0, "r": 30794, "i": 552.0}, {"s": 40.3, "r": 117750, "i": 550.0}, {"s": 40.0, "r": 128810, "i": null}, {"s": 37.0, "r": 118604, "i": null}, {"s": 33.0, "r": 129000, "i": 563.0}];
+const CURVE  = [{"s": 32, "lo": 30, "hi": 34, "med": 129000, "min": 129000, "max": 129000, "n": 1}, {"s": 37, "lo": 35, "hi": 39, "med": 118604, "min": 118604, "max": 118604, "n": 1}, {"s": 42, "lo": 40, "hi": 44, "med": 80000, "min": 30794, "max": 144333, "n": 7}, {"s": 47, "lo": 45, "hi": 49, "med": 51050, "min": 28391, "max": 146563, "n": 10}, {"s": 52, "lo": 50, "hi": 54, "med": 29880, "min": 3200, "max": 67802, "n": 18}, {"s": 57, "lo": 55, "hi": 59, "med": 23487, "min": 2772, "max": 47644, "n": 14}, {"s": 62, "lo": 60, "hi": 64, "med": 17289, "min": 10626, "max": 42862, "n": 10}, {"s": 67, "lo": 65, "hi": 69, "med": 9241, "min": 8100, "max": 24138, "n": 16}, {"s": 72, "lo": 70, "hi": 74, "med": 7089, "min": 4539, "max": 11925, "n": 8}, {"s": 77, "lo": 75, "hi": 79, "med": 4964, "min": 4322, "max": 6200, "n": 7}, {"s": 82, "lo": 80, "hi": 84, "med": 3533, "min": 2951, "max": 4513, "n": 3}, {"s": 87, "lo": 85, "hi": 89, "med": 2005, "min": 2005, "max": 2005, "n": 1}, {"s": 92, "lo": 90, "hi": 94, "med": 3822, "min": 3822, "max": 3822, "n": 1}];
+
+function upd() {
+  const m = +document.getElementById('iMath').value||0;
+  const p = +document.getElementById('iPhy').value||0;
+  const c = +document.getElementById('iChem').value||0;
+  const ipe = +document.getElementById('iIpe').value||0;
+  const total = m+p+c;
+  document.getElementById('tTotal').textContent = total;
+
+  if (ipe > 0) {
+    const pct = ((ipe/600)*100).toFixed(1);
+    document.getElementById('iIpePct').value = pct + '%';
+    const merit = ((total/160)*75 + (ipe/600)*25).toFixed(2);
+    document.getElementById('tMerit').textContent = merit;
+    document.getElementById('meritRow').classList.add('show');
+  } else {
+    document.getElementById('iIpePct').value = '';
+    document.getElementById('meritRow').classList.remove('show');
+  }
+}
+
+function interpolate(score) {
+  // Use real curve data
+  const sorted = [...POINTS].sort((a,b)=>b.s-a.s);
+  if (score >= sorted[0].s) return sorted[0].r;
+  if (score <= sorted[sorted.length-1].s) return sorted[sorted.length-1].r;
+  for (let i=0;i<sorted.length-1;i++) {
+    const s1=sorted[i].s, r1=sorted[i].r;
+    const s2=sorted[i+1].s, r2=sorted[i+1].r;
+    if (score<=s1 && score>=s2) {
+      const t=(s1-score)/(s1-s2||1);
+      return Math.round(r1+t*(r2-r1));
+    }
+  }
+  return null;
+}
+
+function getNearby(score) {
+  return POINTS
+    .filter(p => Math.abs(p.s - score) <= 4)
+    .sort((a,b) => Math.abs(a.s-score) - Math.abs(b.s-score))
+    .slice(0, 6);
+}
+
+function fmt(n) {
+  if (n>=100000) return (n/100000).toFixed(1)+'L';
+  if (n>=1000) return (n/1000).toFixed(1)+'K';
+  return n.toLocaleString();
+}
+
+function predict() {
+  const m = +document.getElementById('iMath').value||0;
+  const p = +document.getElementById('iPhy').value||0;
+  const c = +document.getElementById('iChem').value||0;
+  const ipe = +document.getElementById('iIpe').value||0;
+  const total = m+p+c;
+
+  if (total <= 0) { alert('Please enter your EAMCET marks!'); return; }
+  if (m>80||p>40||c>40) { alert('Marks exceed maximum — please check!'); return; }
+
+  // Validation
+  if (ipe > 0 && ipe < 100) { alert('IPE marks look too low. Enter total of Physics+Chemistry+Maths out of 600.'); return; }
+
+  const midRank = interpolate(total);
+  const lo = Math.max(1, Math.round(midRank*0.8));
+  const hi = Math.round(midRank*1.25);
+  const merit = ipe > 0 ? ((total/160)*75+(ipe/600)*25).toFixed(2) : null;
+  const pct = Math.round((total/160)*100);
+
+  // Performance label
+  let perf, perfCls, chance, chanceCls;
+  if (total>=140){perf='🏆 Exceptional';perfCls='g';}
+  else if(total>=120){perf='⭐ Very Good';perfCls='g';}
+  else if(total>=100){perf='✅ Good';perfCls='a';}
+  else if(total>=80){perf='📈 Average';perfCls='a';}
+  else{perf='📉 Below Avg';perfCls='r';}
+
+  if(midRank<=5000){chance='Top Govt Colleges';chanceCls='g';}
+  else if(midRank<=20000){chance='Good Private Colleges';chanceCls='g';}
+  else if(midRank<=60000){chance='Average Private';chanceCls='a';}
+  else{chance='Tier 3 Colleges';chanceCls='r';}
+
+  document.getElementById('rRange').textContent = fmt(lo)+' – '+fmt(hi);
+  document.getElementById('rNote').textContent = 'Most likely around '+midRank.toLocaleString()+' (based on real student data)';
+  document.getElementById('iScore').textContent = total+' / 160';
+  document.getElementById('iMerit').textContent = merit ? merit+' / 100' : 'Enter IPE for merit';
+  document.getElementById('iPerf').textContent = perf;
+  document.getElementById('iPerf').className = 'iv '+perfCls;
+  document.getElementById('iChance').textContent = chance;
+  document.getElementById('iChance').className = 'iv '+chanceCls;
+  document.getElementById('bPct').textContent = pct+'%';
+  document.getElementById('bFill').style.width = pct+'%';
+
+  // Nearby students
+  const nearby = getNearby(total);
+  document.getElementById('nearbyList').innerHTML = nearby.length
+    ? nearby.map(n=>`<span class="nitem">Score <strong>${n.s}</strong> → Rank <strong>${n.r.toLocaleString()}</strong></span>`).join('')
+    : '<span style="color:var(--muted);font-size:13px;">No nearby data points</span>';
+
+  // College link
+  document.getElementById('collegeBtn').href = 'college-predictor.html?rank='+midRank;
+  document.getElementById('collegeBtn').textContent = '🎓 See Colleges For Rank ~'+midRank.toLocaleString()+' →';
+
+  const rc = document.getElementById('resultCard');
+  rc.classList.add('show');
+  rc.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// Build ref table
+function buildTable() {
+  const tbody = document.getElementById('refBody');
+  tbody.innerHTML = CURVE.map(c => {
+    let tier, tcls;
+    if(c.lo>=130){tier='Exceptional';tcls='t1';}
+    else if(c.lo>=110){tier='Very Good';tcls='t2';}
+    else if(c.lo>=80){tier='Good';tcls='t3';}
+    else{tier='Below Avg';tcls='t4';}
+    return `<tr>
+      <td class="sc">${c.lo} – ${c.hi}</td>
+      <td class="rc">${c.min.toLocaleString()} – ${c.max.toLocaleString()}</td>
+      <td class="tc"><span class="${tcls}">${tier}</span></td>
+      <td class="nc">${c.n} students</td>
+    </tr>`;
+  }).join('');
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Enter')predict();});
+buildTable();
+</script>
+</body>
+</html>
